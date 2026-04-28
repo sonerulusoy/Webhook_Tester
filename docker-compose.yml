@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./Backend/SaaS.Backend
+      dockerfile: Dockerfile
+    ports:
+      - "5099:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DATABASE_URL=Data Source=data/SaaS_Prod.db
+      - Jwt__Token=YourVeryLongAndSecretKeyForProductionMustBeAtLeast32Chars
+    volumes:
+      - backend-data:/app/data
+    restart: always
+
+volumes:
+  backend-data:
