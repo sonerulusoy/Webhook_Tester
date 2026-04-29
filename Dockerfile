@@ -14,11 +14,11 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copy csproj using path relative to root context
+# Copy csproj using path relative to root
 COPY ["Backend/SaaS.Backend/SaaS.Backend.csproj", "Backend/SaaS.Backend/"]
 RUN dotnet restore "Backend/SaaS.Backend/SaaS.Backend.csproj"
 
-# Copy everything from root context
+# Copy everything else
 COPY . .
 WORKDIR "/src/Backend/SaaS.Backend"
 RUN dotnet build "SaaS.Backend.csproj" -c $BUILD_CONFIGURATION -o /app/build
@@ -40,4 +40,5 @@ COPY --from=publish /app/publish .
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_HTTP_PORTS=8080
 
+# Uygulama ayağa kalkarken otomatik migrasyon yapacak şekilde Program.cs güncellendi
 ENTRYPOINT ["dotnet", "SaaS.Backend.dll"]
